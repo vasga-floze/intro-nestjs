@@ -4,7 +4,7 @@ import { Injectable } from '@nestjs/common';
 import { Task, TaskStatus } from './task.entity';
 //import a module for generating unique ids
 import { v4 } from 'uuid';
-import { filter } from 'rxjs';
+import { updateTaskDto } from './dto/task.dto';
 
 //the following decorator allows this service/class to be injected elsewhere in the application
 @Injectable()
@@ -43,5 +43,14 @@ export class TasksService {
         this.tasks = this.tasks.filter(task => task.id !== id)
     }
 
-    updateTask() {}
+    getTaskById(id: string): Task {
+        return this.tasks.find(task => task.id === id);
+    }
+
+    updateTask(id: string, updatedFields: updateTaskDto): Task {
+        const task = this.getTaskById(id);
+        const newTask = Object.assign(task, updatedFields);
+        this.tasks.map((task) => (task.id === id ? newTask : task));
+        return newTask;
+    }
 }
