@@ -1,5 +1,5 @@
 //import decorators to use
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 //import the class to be injected into the constructor
 import { TasksService } from './tasks.service';
 //DTO is imported
@@ -21,5 +21,10 @@ export class TasksController {
     //the @Body is a way to make the request body
     createTask(@Body() newTask: CreateTaskDto) { // ----> DTO
         return this.tasksService.createTask( newTask.title, newTask.description);
+    }
+
+    @Delete(':id')
+    deleteTask(@Param('id') id:string) {
+        return this.tasksService.deleteTask(id)
     }
 }
